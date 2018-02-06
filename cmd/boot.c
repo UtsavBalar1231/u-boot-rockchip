@@ -10,6 +10,8 @@
 #include <common.h>
 #include <command.h>
 #include <net.h>
+#include <asm/io.h>
+#include <asm/arch/boot_mode.h>
 
 #ifdef CONFIG_CMD_GO
 
@@ -45,6 +47,14 @@ static int do_go(struct cmd_tbl *cmdtp, int flag, int argc, char *const argv[])
 	return rcode;
 }
 
+static int do_reboot_brom(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+{
+	writel(BOOT_BROM_DOWNLOAD, CONFIG_ROCKCHIP_BOOT_MODE_REG);
+	do_reset(NULL, 0, 0, NULL);
+
+	return 0;
+}
+
 /* -------------------------------------------------------------------- */
 
 U_BOOT_CMD(
@@ -57,10 +67,16 @@ U_BOOT_CMD(
 #endif
 
 U_BOOT_CMD(
-	reset, 2, 0,	do_reset,
+	rbrom, 1, 0,	do_reboot_brom,
 	"Perform RESET of the CPU",
 	"- cold boot without level specifier\n"
 	"reset -w - warm reset if implemented"
+);
+
+U_BOOT_CMD(
+    reset, 2, 0,    do_reset,
+    "Perform RESET of the CPU",
+    ""
 );
 
 #ifdef CONFIG_CMD_POWEROFF
