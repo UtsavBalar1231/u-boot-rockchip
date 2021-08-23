@@ -47,14 +47,6 @@ static int do_go(struct cmd_tbl *cmdtp, int flag, int argc, char *const argv[])
 	return rcode;
 }
 
-static int do_reboot_brom(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
-{
-	writel(BOOT_BROM_DOWNLOAD, CONFIG_ROCKCHIP_BOOT_MODE_REG);
-	do_reset(NULL, 0, 0, NULL);
-
-	return 0;
-}
-
 /* -------------------------------------------------------------------- */
 
 U_BOOT_CMD(
@@ -63,6 +55,15 @@ U_BOOT_CMD(
 	"addr [arg ...]\n    - start application at address 'addr'\n"
 	"      passing 'arg' as arguments"
 );
+#endif
+
+static int do_reboot_brom(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+{
+	writel(BOOT_BROM_DOWNLOAD, CONFIG_ROCKCHIP_BOOT_MODE_REG);
+	do_reset(NULL, 0, 0, NULL);
+
+	return 0;
+}
 
 U_BOOT_CMD(
 	rbrom, 1, 0,	do_reboot_brom,
@@ -70,8 +71,6 @@ U_BOOT_CMD(
 	"- cold boot without level specifier\n"
 	"reset -w - warm reset if implemented"
 );
-
-#endif
 
 U_BOOT_CMD(
     reset, 2, 0,    do_reset,
