@@ -149,3 +149,11 @@
 &vopl {
 	bootph-all;
 };
+
+&usb_host0_ehci {
+	clocks = <&cru HCLK_HOST0>, <&cru HCLK_HOST0_ARB>;
+};
+
+&usb_host1_ehci {
+	clocks = <&cru HCLK_HOST1>, <&cru HCLK_HOST1_ARB>;
+};
