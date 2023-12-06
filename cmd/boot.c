@@ -11,7 +11,7 @@
 #include <command.h>
 #include <net.h>
 #include <asm/io.h>
-#include <asm/arch/boot_mode.h>
+#include <asm/arch-rockchip/boot_mode.h>
 
 #ifdef CONFIG_CMD_GO
 
@@ -57,7 +57,7 @@ U_BOOT_CMD(
 );
 #endif
 
-static int do_reboot_brom(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+static int do_reboot_brom(struct cmd_tbl *cmdtp, int flag, int argc, char *const argv[])
 {
 	writel(BOOT_BROM_DOWNLOAD, CONFIG_ROCKCHIP_BOOT_MODE_REG);
 	do_reset(NULL, 0, 0, NULL);

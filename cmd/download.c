@@ -12,8 +12,8 @@ __weak void do_board_download(void)
 {
 }
 
-static int do_download(cmd_tbl_t *cmdtp, int flag,
-		       int argc, char * const argv[])
+static int do_download(struct cmd_tbl *cmdtp, int flag,
+		       int argc, char *const argv[])
 {
 	disable_ctrlc(1);
 
@@ -25,7 +25,7 @@ static int do_download(cmd_tbl_t *cmdtp, int flag,
 	run_command("rockusb 0 $devtype $devnum", 0);
 #endif
 	printf("Enter rockusb failed, fallback to bootrom...\n");
-	flushc();
+	flush();
 	run_command("rbrom", 0);
 
 	return 0;
