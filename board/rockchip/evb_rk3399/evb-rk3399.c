@@ -8,11 +8,35 @@
 #include <efi_loader.h>
 #include <init.h>
 #include <log.h>
+#include <adc.h>
 #include <asm/arch-rockchip/periph.h>
+#include <asm/io.h>
 #include <linux/kernel.h>
 #include <power/regulator.h>
 
+DECLARE_GLOBAL_DATA_PTR;
+
 #define ROCKPI4_UPDATABLE_IMAGES	2
+#define KEY_DOWN_MIN_VAL        0
+#define KEY_DOWN_MAX_VAL        30
+
+int rockchip_dnl_key_pressed(void)
+{
+	unsigned int id_val;
+
+	if (adc_channel_single_shot("saradc", 1, &id_val)) {
+		printf("%s read adc recovery key failed\n", __func__);
+		return false;
+	}
+
+	if (id_val >= KEY_DOWN_MIN_VAL && id_val <= KEY_DOWN_MAX_VAL)
+		return true;
+
+	return false;
+}
+
+// if (check_back_to_brom_dnl_flag())
+//	back_to_bootrom(BROM_BOOT_ENTER_DNL)
 
 #if IS_ENABLED(CONFIG_EFI_HAVE_CAPSULE_SUPPORT)
 static struct efi_fw_image fw_images[ROCKPI4_UPDATABLE_IMAGES] = {0};
